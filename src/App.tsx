@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import Main from './components/main';
 import Cart from './components/cart';
+import Order from './components/order';
 
 import './App.css';
 
@@ -12,6 +13,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Main/>} />
       <Route path='/cart' element={<Cart/>} />
+      <Route path='/order' element={<Order/>} />
     </Routes>
     // <div className="App">
     //   <header className="App-header">
