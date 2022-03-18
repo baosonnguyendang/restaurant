@@ -61,15 +61,17 @@ function Order() {
         </div>
         <div>
           {products.map((product) => (
+
             <Produit
-              // key={product.key}
-              // img={product.image}
-              // reference={product.reference}
-              // title={product.title}
-              // description={product.description}
-              // prix={product.prix}
-              // quantity={product.quantity}
-            />
+              key={product['key']}
+              img={product['image']}
+              reference={product['reference']}
+              title={product['title']}
+              description={product['description']}
+              prix={product['prix']}
+              quantity={product['quantity']}
+              />
+
           ))}
         </div>
       </div>

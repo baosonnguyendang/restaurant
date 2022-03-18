@@ -16,6 +16,7 @@ function Produit(props: any) {
   };
 
   return (
+    console.log(num),
     <div className="produit">
       <img src={props.img} alt="avata" />
       <h1>
@@ -28,7 +29,7 @@ function Produit(props: any) {
           <span> {num} </span>
           <button onClick={IncrementItem}>+</button>
         </div>
-        <Button variant="outlined" startIcon={<AddShoppingCartIcon />}>
+        <Button  variant="outlined" startIcon={<AddShoppingCartIcon />}>
           Add
         </Button>
       </div>

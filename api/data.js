@@ -1,5 +1,5 @@
 const data = {
-  products:[
+  "products":[
     {
       key: 1,
       image: "https://www.academiedugout.fr/images/50789/1200-686/10023-nigiri-sushi.jpg?poix=50&poiy=50",
