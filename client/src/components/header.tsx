@@ -18,7 +18,7 @@ const Header = () => {
           <a href="./cart">
             <ShoppingCartIcon />
             <span> • </span>
-            <span>{0}</span>
+            <span>{0}€</span>
           </a>
         </div>
       </div>

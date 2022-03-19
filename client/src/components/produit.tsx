@@ -15,8 +15,25 @@ function Produit(props: any) {
     setNum(num - 1);
   };
 
+  const addToCart = (): void => {
+    const addCart = { ...props, num: num }
+    console.log(addCart);
+    const cartExisted = localStorage.getItem('cart');
+    if (!cartExisted) {
+      localStorage.setItem('cart', JSON.stringify([addCart]));
+    } else {
+      let cartStorage: any[] = JSON.parse(cartExisted);
+      if (cartStorage.some((x:any) => x.reference === props.reference)) {
+        cartStorage = cartStorage.map((x:any) => x.reference === props.reference ? addCart : x);
+      } else {
+        cartStorage.push(addCart);
+      }
+      localStorage.setItem('cart', JSON.stringify(cartStorage));
+    }
+    console.log(localStorage.getItem('cart'))
+  }
+
   return (
-    console.log(num),
     <div className="produit">
       <img src={props.img} alt="avata" />
       <h1>
@@ -29,7 +46,7 @@ function Produit(props: any) {
           <span> {num} </span>
           <button onClick={IncrementItem}>+</button>
         </div>
-        <Button  variant="outlined" startIcon={<AddShoppingCartIcon />}>
+        <Button onClick={addToCart} variant="outlined" startIcon={<AddShoppingCartIcon />}>
           Add
         </Button>
       </div>

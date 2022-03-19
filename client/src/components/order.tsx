@@ -61,7 +61,6 @@ function Order() {
         </div>
         <div>
           {products.map((product) => (
-
             <Produit
               key={product['key']}
               img={product['image']}
@@ -71,7 +70,6 @@ function Order() {
               prix={product['prix']}
               quantity={product['quantity']}
               />
-
           ))}
         </div>
       </div>
