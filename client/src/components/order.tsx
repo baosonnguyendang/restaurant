@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -7,9 +7,10 @@ import Checkbox from "@mui/material/Checkbox";
 import Produit from "./produit";
 import Header from "./header";
 
-import produit from "../produit";
+// import produit from "../produit";
 
 import "../styles/order.css";
+import axios from "axios";
 
 interface CategoryFilter {
   id: number;
@@ -18,6 +19,16 @@ interface CategoryFilter {
 }
 
 function Order() {
+
+  const [products, setProducts] = useState([])
+  useEffect(()=>{
+    const fetchData = async () => {
+      const result = await axios.get('/api/products')
+      setProducts(result.data)
+    }
+    fetchData()
+  }, [])
+
   const categories: CategoryFilter[] = [
     {
       id: 0,
@@ -35,7 +46,7 @@ function Order() {
       check: false,
     },
   ];
-
+  
   return (
     <>
       <Header></Header>
@@ -49,16 +60,18 @@ function Order() {
           </FormGroup>
         </div>
         <div>
-          {produit.map((produit) => (
+          {products.map((product) => (
+
             <Produit
-              key={produit.key}
-              img={produit.image}
-              reference={produit.reference}
-              title={produit.title}
-              description={produit.description}
-              prix={produit.prix}
-              quantity={produit.quantity}
-            />
+              key={product['key']}
+              img={product['image']}
+              reference={product['reference']}
+              title={product['title']}
+              description={product['description']}
+              prix={product['prix']}
+              quantity={product['quantity']}
+              />
+
           ))}
         </div>
       </div>

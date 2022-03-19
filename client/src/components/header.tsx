@@ -6,19 +6,19 @@ const Header = () => {
   return (
     <div className="header">
       <div className="header-left">
-          <h1>Sushi tnt</h1>
+          <a href="./"><h1>Sushi Shop</h1></a>
       </div>
       <div className="header-right">
         <a href="./">Home</a>
         <a href="./">Gallery</a>
-        <a href="./" className="order-online">
+        <a href="./order" className="order-online">
           <span>Order Online</span>
         </a>
         <div className="cart">
           <a href="./cart">
             <ShoppingCartIcon />
             <span> • </span>
-            <span>10000000000€</span>
+            <span>{0}</span>
           </a>
         </div>
       </div>

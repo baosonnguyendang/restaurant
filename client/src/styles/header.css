@@ -35,6 +35,13 @@ a {
     border: 1px solid burlywood;
 }
 
+header h1 {
+  color: #fff;
+  font-family: "McLaren", cursive;
+  font-weight: 200;
+}
+
+
 .order-online > span {
     align-self: center;
 }

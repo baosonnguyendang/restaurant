@@ -16,19 +16,20 @@ function Produit(props: any) {
   };
 
   return (
+    console.log(num),
     <div className="produit">
       <img src={props.img} alt="avata" />
       <h1>
         {props.reference}. {props.title}
       </h1>
       <div className="action">
-        <p>{props.prix}</p>
+        <strong><p>{props.prix}</p></strong>
         <div>
-          <button onClick={IncrementItem}>+</button>
-          <span>{num}</span>
           <button onClick={DecreaseItem}>-</button>
+          <span> {num} </span>
+          <button onClick={IncrementItem}>+</button>
         </div>
-        <Button variant="outlined" startIcon={<AddShoppingCartIcon />}>
+        <Button  variant="outlined" startIcon={<AddShoppingCartIcon />}>
           Add
         </Button>
       </div>
