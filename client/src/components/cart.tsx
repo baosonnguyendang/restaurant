@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,11 +26,47 @@ const style = {
 };
 
 const Cart = () => {
-  const cartData = localStorage.getItem("cart");
-  if (cartData !== null) {
-    console.log(JSON.parse(cartData));
-    var parsedCartData: any[] = JSON.parse(cartData);
-  }
+  var t = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart") || "{}").reduce((prev: any, curr: any) => prev + curr["num"] * Number(curr["prix"]), 0) : 0;
+  //const cartData = localStorage.getItem("cart");
+  const [parsedCartData, setParsedCartData] = useState<any[]>([]);
+  const [cartData, setCartData] = useState(localStorage.getItem("cart"));
+
+  useEffect(() => {
+    setTotal(totalCal());
+  }, [])
+
+  useEffect(() => {
+    setParsedCartData(JSON.parse(cartData || "{}"));
+  }, [cartData]);
+
+  const minusProduct = (reference: any): void => {
+    let temp = parsedCartData.find((x: any) => x.reference === reference);
+    temp!["num"] > 0 && temp!["num"]--;
+    console.log(parsedCartData);
+    localStorage.setItem("cart", JSON.stringify(parsedCartData));
+    setCartData(localStorage.getItem("cart"));
+    setTotal(totalCal())
+  };
+
+  const addProduct = (reference: any): void => {
+    let temp = parsedCartData.find((x: any) => x.reference === reference);
+    temp!["num"] < temp!["quantity"] && temp!["num"]++;
+    localStorage.setItem("cart", JSON.stringify(parsedCartData));
+    setCartData(localStorage.getItem("cart"));
+    setTotal(totalCal);
+  };
+
+  const deleteProduct = (reference: any): void => {
+    setParsedCartData(
+      parsedCartData.filter((x: any) => x.reference != reference)
+    );
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(
+        parsedCartData.filter((x: any) => x.reference !== reference)
+      )
+    );
+  };
 
   //handle modal
   const [open, setOpen] = useState(false);
@@ -46,7 +82,7 @@ const Cart = () => {
   const [city, setCity] = useState("");
   const [code, setCode] = useState("");
 
-  var clientData = {lastName, firstName, email, phone, street, city, code};
+  var clientData = { lastName, firstName, email, phone, street, city, code };
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -59,13 +95,23 @@ const Cart = () => {
     console.log(data);
   };
 
+  //total money
+  const [total, setTotal] = useState(localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart") || "{}").reduce((prev: any, curr: any) => prev + curr["num"] * Number(curr["prix"]), 0) : 0);
+  const totalCal = (): number => {
+    console.log(JSON.parse(localStorage.getItem("cart") || "{}").reduce((prev: any, curr: any) => prev + curr["num"] * Number(curr["prix"]), 0));
+    if (parsedCartData.length > 0) {
+      return parsedCartData.reduce((prev: any, curr: any) => prev + curr["num"] * Number(curr["prix"]), 0);
+    }
+    return 0;
+  };
+
   return (
     <>
       <Header />
       <div className="product-cart">
         <div className="product-list">
           {cartData &&
-            JSON.parse(cartData).map((product: any) => (
+            parsedCartData.map((product: any) => (
               // <Produit
               //   key={product["key"]}
               //   img={product["image"]}
@@ -84,11 +130,13 @@ const Cart = () => {
                     <Button
                       variant="contained"
                       startIcon={<RemoveIcon />}
+                      onClick={() => minusProduct(product["reference"])}
                     ></Button>
                     <span>{product["num"]}</span>
                     <Button
                       variant="contained"
                       startIcon={<AddIcon />}
+                      onClick={() => addProduct(product["reference"])}
                     ></Button>
                   </div>
                   <div className="product-total">
@@ -96,6 +144,7 @@ const Cart = () => {
                     <Button
                       variant="contained"
                       startIcon={<DeleteIcon />}
+                      onClick={() => deleteProduct(product["reference"])}
                     ></Button>
                   </div>
                 </div>
@@ -104,7 +153,7 @@ const Cart = () => {
         </div>
         <div className="product-info">
           <div className="info">
-            <Button onClick={handleOpen}>Open modal</Button>
+            <Button onClick={handleOpen}>Edit info</Button>
             <Modal open={open} onClose={handleClose}>
               <Box sx={style}>
                 <form onSubmit={handleSubmit}>
@@ -164,7 +213,7 @@ const Cart = () => {
                       onChange={(e) => setCode(e.target.value)}
                     />
                   </label>
-                  <br/>
+                  <br />
                   <input type="submit" />
                 </form>
               </Box>
@@ -173,7 +222,7 @@ const Cart = () => {
           <div className="product-purchase">
             <div>
               <span>Total before discount:</span>
-              <span>15$</span>
+              <span>{total === 0 ? t : total}$</span>
             </div>
             <div>
               <span>Discount:</span>
@@ -185,9 +234,9 @@ const Cart = () => {
             </div>
             <div>
               <span>Total:</span>
-              <span>15$</span>
+              <span>{total === 0 ? t : total + 5}$</span>
             </div>
-            <button onClick={orderNow}>Order now</button>
+            <button onClick={() => orderNow}>Order now</button>
           </div>
         </div>
       </div>
